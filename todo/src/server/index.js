@@ -35,11 +35,28 @@ app.post('/add', (req, res) => {
 app.put('/edit', (req, res) => {
     const body = req.body;
     Todo.findByIdAndUpdate(body._id, {
-        complete: body.complete == 'false' ? 'true' : 'false'
+        complete: body.complete ? false : true
     }, () => {
         const data = {
             code: 0,
             msg: 'edit task success',
+            data: ''
+        };
+        res.send(data);
+    });
+});
+
+app.put('/editAll', (req, res) => {
+    const body = req.body;
+    const type = body.type;
+    Todo.updateMany({
+        complete: type
+    }, {
+        complete: !type
+    }, () => {
+        const data = {
+            code: 0,
+            msg: 'edit all task success',
             data: ''
         };
         res.send(data);

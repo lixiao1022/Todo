@@ -1,20 +1,24 @@
 <template>
     <div>
-        <input v-model="taskName" placeholder="待办事项" @keyup.enter="addTask()">
+        <input type="checkbox" @click="selectAll()" :checked="allComplete">
 
-        <todo-item :data="tasks"></todo-item>
+        <input v-model="taskName" placeholder="待办" @keyup.enter="add()">
 
-        <div v-show="toolbarShow">
-            <span>{{ undoCount }} 待办</span>
+        <todo-item></todo-item>
+
+        <div v-show="totalCount > 0 ? true : false">
+            <span>{{ undoCount }} 条待办</span>
             <button>全部</button>
             <button>进行中</button>
             <button>已完成</button>
+            <button>删除已完成</button>
         </div>
     </div>
 </template>
 
 <script>
     import TodoItem from './TodoItem.vue';
+    import { mapState, mapGetters, mapActions } from 'vuex';
 
     export default {
         components: {
@@ -23,49 +27,41 @@
 
         data() {
             return {
-                taskName: '',
-                tasks: []
-            }
+                taskName: ''
+            };
         },
 
         computed: {
-            // 控制下方的工具栏
-            toolbarShow() {
-                return this.tasks.length > 0 ? true : false;
-            },
-            
-            // 显示代办理数量
-            undoCount() {
-                return this.tasks.filter(item => {
-                    return !item.complete;
-                }).length;
-            }
+            ...mapState([
+                'list'
+            ]),
+            ...mapGetters([
+                'totalCount',
+                'undoCount',
+                'allComplete'
+            ])
         },
 
         methods: {
-            getList(type) {
-                const callback = (data) => {
-                    this.tasks = data;
-                };
-                const params = {
-                    complete: type
-                };
-                this._ajax('get', 'api/list', callback, params);
-            },
-            addTask() {
+            ...mapActions([
+                'getList',
+                'addTask',
+                'changeAllTask'
+            ]),
+
+            add() {
                 const name = this.taskName;
-                // 清空输入框
                 this.taskName = '';
                 if (name != '') {
-                    const callback = () => {
-                        this.getList();
-                    };
-                    const params = {
+                    this.addTask({
                         name,
                         complete: false
-                    };
-                    this._ajax('post', 'api/add', callback, params);
+                    });
                 }
+            },
+
+            selectAll() {
+                this.changeAllTask(this.allComplete);
             }
         },
 
