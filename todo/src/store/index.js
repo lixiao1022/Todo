@@ -8,7 +8,8 @@ const that = Vue.prototype;
 export default new Vuex.Store({
     state: {
         loading: false,
-        list: []
+        list: [],
+        showLi: undefined
     },
 
     getters: {
@@ -18,6 +19,11 @@ export default new Vuex.Store({
         undoCount(state) {
             return state.list.filter(item => {
                 return !item.complete;
+            }).length;
+        },
+        doneCount(state) {
+            return state.list.filter(item => {
+                return item.complete;
             }).length;
         },
         allComplete(state) {
@@ -41,6 +47,10 @@ export default new Vuex.Store({
         reload(state, newList) {
             state.list = newList;
         },
+
+        showType(state, type) {
+            state.showLi = type;
+        }
     },
     actions: {
         getList({ commit }, type) {

@@ -1,7 +1,7 @@
 <template>
     <div>
         <ul>
-            <li v-for="item in list" :key="item._id">
+            <li v-for="item in list" :key="item._id" v-show="item.complete != showLi">
                 <input type="checkbox" @click="changeTask(item)" :checked="item.complete">
                 <span :class="{content: true, complete: item.complete}">{{ item.name }}</span>
                 <span class="close" @click="remove(item._id)"></span>
@@ -16,7 +16,8 @@
     export default {
         computed: {
             ...mapState([
-                'list'
+                'list',
+                'showLi'
             ])
         },
 

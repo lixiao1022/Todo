@@ -6,19 +6,19 @@
 
         <todo-item></todo-item>
 
-        <div v-show="totalCount > 0 ? true : false">
+        <div v-show="totalCount">
             <span>{{ undoCount }} 条待办</span>
-            <button>全部</button>
-            <button>进行中</button>
-            <button>已完成</button>
-            <button>删除已完成</button>
+            <button @click="showType()">全部</button>
+            <button @click="showType(true)">进行中</button>
+            <button @click="showType(false)">已完成</button>
+            <button v-show="doneCount">删除已完成</button>
         </div>
     </div>
 </template>
 
 <script>
     import TodoItem from './TodoItem.vue';
-    import { mapState, mapGetters, mapActions } from 'vuex';
+    import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
 
     export default {
         components: {
@@ -38,6 +38,7 @@
             ...mapGetters([
                 'totalCount',
                 'undoCount',
+                'doneCount',
                 'allComplete'
             ])
         },
@@ -47,6 +48,9 @@
                 'getList',
                 'addTask',
                 'changeAllTask'
+            ]),
+            ...mapMutations([
+                'showType'
             ]),
 
             add() {
