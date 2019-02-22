@@ -5,7 +5,7 @@ const TodoSchema = new Schema({
         type: String
     },
     complete: {
-        type: String
+        type: Boolean
     }
 }, {
     collection: 'task'
