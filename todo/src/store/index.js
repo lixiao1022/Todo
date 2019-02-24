@@ -31,7 +31,7 @@ export default new Vuex.Store({
             return state.list.every(item => {
                 // 完成了
                 return item.complete;
-            });
+            }) && state.list.length > 0;
         }
     },
 
@@ -95,6 +95,13 @@ export default new Vuex.Store({
                 _ids
             };
             that._ajax('delete', 'api/delete', callback, params);
+        },
+
+        deleteDoneTask({ dispatch }) {
+            const callback = () => {
+                dispatch('getList');
+            };
+            that._ajax('delete', 'api/deleteDone', callback, {});
         }
     }
 });

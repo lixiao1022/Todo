@@ -80,4 +80,17 @@ app.delete('/delete', (req, res) => {
     });
 });
 
+app.delete('/deleteDone', (req, res) => {
+    Todo.remove({
+        complete: true
+    }, () => {
+        const data = {
+            code: 0,
+            msg: 'remove done success',
+            data: ''
+        };
+        res.send(data);
+    });
+});
+
 app.listen(8000);
