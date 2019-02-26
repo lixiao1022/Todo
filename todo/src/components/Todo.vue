@@ -72,6 +72,7 @@
             add() {
                 const name = this.taskName;
                 this.taskName = '';
+                // 输入框不为空就添加到 todos
                 if (name != '') {
                     this.addTask({
                         name,
@@ -80,6 +81,7 @@
                 }
             },
 
+            // 全选或者取消全选，传入当前的状态
             selectAll() {
                 this.changeAllTask(this.allComplete);
             },
