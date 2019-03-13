@@ -3,7 +3,7 @@ import axios from 'axios';
 function ajaxCallback(callback) {
     return res => {
         const data = res.data;
-        if (data.code == 0) {
+        if (data.code == 200) {
             callback(data.data);
         } else {
             alert(data.msg);

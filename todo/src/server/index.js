@@ -1,18 +1,57 @@
 const express = require('express'),
     bodyParser = require('body-parser'),
     app = express(),
-    Todo = require('./model');
+    User = require('./UserModel'),
+    Todo = require('./TaskModel');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.get('/list', (req, res) => {
+User.find({name: 'admin'}, (err, res) => {
+    if (res.length == 0) {
+        User.create({
+            name: 'admin',
+            password: 'admin'
+        });
+    }
+});
+
+User.find({name: '001'}, (err, res) => {
+    if (res.length == 0) {
+        User.create({
+            name: '001',
+            password: '123456'
+        });
+    }
+});
+
+app.post('/api/login/in', (req, res) => {
+    const body = req.body;
+    User.find(body, (err, response) => {
+        if (response.length == 1) {
+            const data = {
+                code: 200,
+                msg: 'login success',
+                data: response[0]
+            };
+            res.send(data);
+        } else {
+            res.send({
+                code: -1,
+                msg: '密码错误！',
+                data: ''
+            });
+        }
+    });
+});
+
+app.get('/api/task', (req, res) => {
     const query = req.query;
     Todo.find(query, (err, response) => {
         const data = {
-            code: 0,
+            code: 200,
             msg: 'get list success',
             data: response
         };
@@ -20,50 +59,52 @@ app.get('/list', (req, res) => {
     });
 });
 
-app.post('/add', (req, res) => {
+app.post('/api/task', (req, res) => {
     const body = req.body;
     Todo.create(body, (err, response) => {
         const data = {
-            code: 0,
+            code: 200,
             msg: 'add task success',
-            data: response._id
+            data: response
         };
         res.send(data);
     });
 });
 
-app.put('/edit', (req, res) => {
+app.put('/api/task', (req, res) => {
     const body = req.body;
     Todo.findByIdAndUpdate(body._id, {
         complete: body.complete ? false : true
-    }, () => {
+    }, (err, response) => {
         const data = {
-            code: 0,
+            code: 200,
             msg: 'edit task success',
-            data: ''
+            data: response
         };
         res.send(data);
     });
 });
 
-app.put('/editAll', (req, res) => {
+app.put('/api/allTask', (req, res) => {
     const body = req.body;
     const type = body.type;
+    const user_id = body.user_id;
     Todo.updateMany({
-        complete: type
+        complete: type,
+        user_id
     }, {
         complete: !type
-    }, () => {
+    }, (err, response) => {
         const data = {
-            code: 0,
+            code: 200,
             msg: 'edit all task success',
-            data: ''
+            data: response
         };
         res.send(data);
     });
 });
 
-app.delete('/delete', (req, res) => {
+app.delete('/api/task', (req, res) => {
     const query = req.query;
     const _ids = query._ids.split(',');
     Todo.remove({
@@ -72,7 +113,7 @@ app.delete('/delete', (req, res) => {
         }
     }, () => {
         const data = {
-            code: 0,
+            code: 200,
             msg: 'remove success',
             data: ''
         };
@@ -80,12 +121,14 @@ app.delete('/delete', (req, res) => {
     });
 });
 
-app.delete('/deleteDone', (req, res) => {
+app.delete('/api/doneTask', (req, res) => {
+    const user_id = req.query.user_id;
     Todo.remove({
-        complete: true
+        complete: true,
+        user_id
     }, () => {
         const data = {
-            code: 0,
+            code: 200,
             msg: 'remove done success',
             data: ''
         };
@@ -93,4 +136,4 @@ app.delete('/deleteDone', (req, res) => {
     });
 });
 
-app.listen(8000);
+app.listen(8002);

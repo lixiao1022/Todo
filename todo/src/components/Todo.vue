@@ -1,13 +1,13 @@
 <template>
-    <div>
+    <div class="m-todo">
         <div class="title">
             todos
         </div>
-        <div class="todo">
+        <div class="content">
             <div class="header">
                 <input v-show="totalCount" type="checkbox" @click="selectAll()" :checked="allComplete">
 
-                <input class="input" v-model="taskName" placeholder=" 输入待办事项" @keyup.enter="add()">
+                <input class="todo-input" v-model="taskName" placeholder=" 输入待办事项" @keyup.enter="add()">
             </div>
 
             <todo-item></todo-item>
@@ -42,7 +42,8 @@
         data() {
             return {
                 taskName: '',
-                showTaskType: 'all'
+                showTaskType: 'all',
+                user: JSON.parse(sessionStorage.getItem('user'))
             };
         },
 
@@ -75,6 +76,7 @@
                 // 输入框不为空就添加到 todos
                 if (name != '') {
                     this.addTask({
+                        user_id: this.user._id,
                         name,
                         complete: false
                     });
@@ -106,37 +108,60 @@
         },
 
         created() {
-            this.getList();
+            this.getList(this.user._id);
         }
     }
 </script>
 
-<style scoped>
-    .title {
-        text-align: center;
-        font-size: 80px;
-    }
-    .todo {
-        width: 600px;
-        border: 1px solid gray;
-    }
+<style scoped lang="less">
+    @borderStyle: 1px solid gray;
 
-    .header {
-        padding: 15px;
-        border-bottom: 1px solid gray;
-        display: flex;
-        align-items: center;
-        position: relative;
-        height: 40px;
-    }
+    .m-todo {
+        .title {
+            text-align: center;
+            font-size: 80px;
+        }
 
-    .input {
-        height: 40px;
-        border: none;
-        outline: none;
-        font-size: 24px;
-        position: absolute;
-        right: 240px;
+        .content {
+            width: 600px;
+            border: @borderStyle;
+
+            .header {
+                padding: 15px;
+                border-bottom: @borderStyle;
+                display: flex;
+                align-items: center;
+                position: relative;
+                height: 40px;
+
+                .todo-input {
+                    height: 40px;
+                    border: none;
+                    outline: none;
+                    font-size: 24px;
+                    position: absolute;
+                    right: 240px;
+                }
+            }
+
+            .footer {
+                padding: 15px 20px;
+                font-size: 18px;
+                display: flex;
+                align-items: center;
+                position: relative;
+
+                .util {
+                    position: absolute;
+                    right: 200px;
+                }
+
+                .deleteDone {
+                    position: absolute;
+                    right: 30px;
+                }
+            }
+        }
     }
 
     .input::-webkit-input-placeholder {
@@ -147,16 +172,7 @@
         zoom: 200%;
     }
 
-    .footer {
-        padding: 15px 20px;
-        font-size: 18px;
-        display: flex;
-        align-items: center;
-        position: relative;
-    }
-
     a {
-        text-decoration: none;
         color: gray;
         border: 1px solid #fff;
         padding: 5px;
@@ -165,15 +181,5 @@
 
     a.select {
         border-color: gray;
-    }
-
-    .util {
-        position: absolute;
-        right: 200px;
-    }
-
-    .deleteDone {
-        position: absolute;
-        right: 30px;
     }
 </style>

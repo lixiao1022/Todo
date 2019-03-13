@@ -5,6 +5,8 @@ import store from './store/';
 
 import extend from './utils/extend';
 
+import './reset.css';
+
 Vue.config.productionTip = false;
 
 extend(Vue.prototype);

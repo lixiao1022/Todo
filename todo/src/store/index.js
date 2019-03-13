@@ -9,7 +9,8 @@ export default new Vuex.Store({
     state: {
         loading: false,
         list: [],
-        showLi: undefined
+        showLi: undefined,
+        user_id: JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user'))._id : ''
     },
 
     getters: {
@@ -36,6 +37,14 @@ export default new Vuex.Store({
     },
 
     mutations: {
+        clearUser(state) {
+            state.user_id = '';
+        },
+        
+        updateUser(state) {
+            state.user_id = JSON.parse(sessionStorage.getItem('user'))._id
+        },
+
         blockUI(state) {
             state.loading = true;
         },
@@ -53,38 +62,39 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        getList({ commit }, type) {
+        getList({ commit, state }) {
             const callback = (data) => {
                 commit('reload', data);
             };
             const params = {
-                complete: type
+                user_id: state.user_id
             };
-            that._ajax('get', 'api/list', callback, params);
+            that._ajax('get', 'api/task', callback, params);
         },
 
         addTask({ dispatch }, task) {
-            const callback = () => {
+            const callback = (res) => {
                 dispatch('getList');
             };
-            that._ajax('post', 'api/add', callback, task);
+            that._ajax('post', 'api/task', callback, task);
         },
 
         changeTask({ dispatch }, task) {
-            const callback = () => {
+            const callback = (res) => {
                 dispatch('getList');
             };
-            that._ajax('put', 'api/edit', callback, task);
+            that._ajax('put', 'api/task', callback, task);
         },
 
-        changeAllTask({ dispatch }, type) {
-            const callback = () => {
+        changeAllTask({ dispatch, state }, type) {
+            const callback = (res) => {
                 dispatch('getList');
             };
             const params = {
-                type
+                type,
+                user_id: state.user_id
             };
-            that._ajax('put', 'api/editAll', callback, params);
+            that._ajax('put', 'api/allTask', callback, params);
         },
 
         deleteTask({ dispatch }, _ids) {
@@ -94,14 +104,14 @@ export default new Vuex.Store({
             const params = {
                 _ids
             };
-            that._ajax('delete', 'api/delete', callback, params);
+            that._ajax('delete', 'api/task', callback, params);
         },
 
-        deleteDoneTask({ dispatch }) {
+        deleteDoneTask({ dispatch, state }) {
             const callback = () => {
                 dispatch('getList');
             };
-            that._ajax('delete', 'api/deleteDone', callback, {});
+            that._ajax('delete', 'api/doneTask', callback, {user_id: state.user_id});
         }
     }
 });
