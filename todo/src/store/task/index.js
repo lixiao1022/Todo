@@ -80,7 +80,7 @@ export default {
                 type,
                 user_id: rootState.user.user_id
             };
-            that._ajax('put', 'api/allTask', callback, params);
+            that._ajax('put', 'api/task/all', callback, params);
         },
 
         deleteTask({ dispatch }, _ids) {
@@ -98,7 +98,7 @@ export default {
             const callback = () => {
                 dispatch('getList');
             };
-            that._ajax('delete', 'api/doneTask', callback, {user_id: rootState.user.user_id});
+            that._ajax('delete', 'api/task/done', callback, {user_id: rootState.user.user_id});
         }
     }
 }
