@@ -23,8 +23,8 @@ yarn install
 
 ## 启动 todo 项目
 
-- `yarn run db` 启动连接数据库的后台服务
-- `yarn start` 启动开发环境
+- `yarn start` 启动打包之后的 todo 项目，首页通过端口 8002 进入
+- `yarn run server` 启动开发环境（8080）
 
 ## 功能分析
 

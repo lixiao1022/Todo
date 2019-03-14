@@ -1,7 +1,7 @@
 const mongoose = require('mongoose'),
       DB_URL = 'mongodb://localhost:27017/todoDB';
 
-mongoose.connect(DB_URL);
+mongoose.connect(DB_URL, { useNewUrlParser: true });
 
 mongoose.connection.on('connected', function () {    
     console.log('连接成功：' + DB_URL);

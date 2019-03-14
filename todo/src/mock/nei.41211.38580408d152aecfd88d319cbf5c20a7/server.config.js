@@ -12,13 +12,13 @@ module.exports = {
     /* 路由 */
     routes: {
         //"ALL /api/*": "代理所有接口, 这里输入代理服务器地址",
+        "DELETE /api/task/done": { path: 'delete/api/task/done/data', id: 186343, group: '待办' },
+        "PUT /api/task/all": { path: 'put/api/task/all/data', id: 186344, group: '待办' },
         "PUT /api/task": { path: 'put/api/task/data', id: 186341, group: '待办' },
         "DELETE /api/task": { path: 'delete/api/task/data', id: 186340, group: '待办' },
         "GET /api/task": { path: 'get/api/task/data', id: 186219, group: '待办' },
         "POST /api/task": { path: 'post/api/task/data', id: 186218, group: '待办' },
         "POST /api/login/in": { path: 'post/api/login/in/data', id: 186213, group: '登录' },
-        "DELETE /api/doneTask": { path: 'delete/api/doneTask/data', id: 186343, group: '待办' },
-        "PUT /api/allTask": { path: 'put/api/allTask/data', id: 186344, group: '待办' },
     },
     /* 注入给页面的模型数据的服务器配置 */
     // modelServer: {
