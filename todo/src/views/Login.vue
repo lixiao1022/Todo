@@ -29,13 +29,13 @@
             }
         },
         methods: {
-            ...mapMutations([
+            ...mapMutations('user', [
                 'updateUser'
             ]),
             login() {
                 const params = this.user;
                 const callback = (data) => {
-                    sessionStorage.setItem('user', JSON.stringify(data));
+                    sessionStorage.setItem('user', data);
                     this.updateUser();
                     this.$router.push('/');
                 };

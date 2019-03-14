@@ -16,7 +16,7 @@
             Todo
         },
         methods: {
-            ...mapMutations([
+            ...mapMutations('user', [
                 'clearUser'
             ]),
             loginOut() {

@@ -42,16 +42,18 @@
         data() {
             return {
                 taskName: '',
-                showTaskType: 'all',
-                user: JSON.parse(sessionStorage.getItem('user'))
+                showTaskType: 'all'
             };
         },
 
         computed: {
-            ...mapState([
+            ...mapState('task', [
                 'list'
             ]),
-            ...mapGetters([
+            ...mapState('user', [
+                'user_id'
+            ]),
+            ...mapGetters('task',[
                 'totalCount',
                 'undoCount',
                 'doneCount',
@@ -60,13 +62,13 @@
         },
 
         methods: {
-            ...mapActions([
+            ...mapActions('task',[
                 'getList',
                 'addTask',
                 'changeAllTask',
                 'deleteDoneTask'
             ]),
-            ...mapMutations([
+            ...mapMutations('task',[
                 'showType'
             ]),
 
@@ -76,7 +78,7 @@
                 // 输入框不为空就添加到 todos
                 if (name != '') {
                     this.addTask({
-                        user_id: this.user._id,
+                        user_id: this.user_id,
                         name,
                         complete: false
                     });
@@ -108,7 +110,7 @@
         },
 
         created() {
-            this.getList(this.user._id);
+            this.getList();
         }
     }
 </script>

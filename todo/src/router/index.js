@@ -24,9 +24,9 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-    const user = sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : {};
+    const user = sessionStorage.getItem('user') ? sessionStorage.getItem('user') : '';
     if (to.path == '/login') {
-        if (user._id) {
+        if (user) {
             // 已经登录过了，跳转到首页
             next('/');
         } else {
@@ -34,7 +34,7 @@ router.beforeEach((to, from, next) => {
             next();
         }
     } else {
-        if (user._id) {
+        if (user) {
             // 已经登录过了，跳转到首页
             next();
         } else {

@@ -15,14 +15,14 @@
 
     export default {
         computed: {
-            ...mapState([
+            ...mapState('task', [
                 'list',
                 'showLi'
             ])
         },
 
         methods: {
-            ...mapActions([
+            ...mapActions('task', [
                 'changeTask',
                 'deleteTask'
             ]),

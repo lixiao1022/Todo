@@ -34,7 +34,7 @@ app.post('/api/login/in', (req, res) => {
             const data = {
                 code: 200,
                 msg: 'login success',
-                data: response[0]
+                data: response[0]._id
             };
             res.send(data);
         } else {
