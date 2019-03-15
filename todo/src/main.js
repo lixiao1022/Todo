@@ -6,6 +6,7 @@ import store from './store/';
 import extend from './utils/extend';
 
 import './reset.css';
+import './utils/nec.css';
 
 Vue.config.productionTip = false;
 

@@ -1,8 +1,8 @@
 <template>
     <div class="m-login" @keyup.enter="login">
         <div class="u-input-wrap">
-            <span class="label">用户名：</span>
-            <input class="input" type="text" v-model="user.name">
+            <span class="label">手机号：</span>
+            <input class="input" type="text" v-model="user.tel">
         </div>
         <div class="u-input-wrap">
             <span class="label">密码：</span>
@@ -16,14 +16,15 @@
 
 <script>
     import {
-        mapMutations
+        mapMutations,
+        mapActions
     } from 'vuex';
 
     export default {
         data() {
             return {
                 user: {
-                    name: '',
+                    tel: '',
                     password: ''
                 }
             }
@@ -32,14 +33,18 @@
             ...mapMutations('user', [
                 'updateUser'
             ]),
+            ...mapActions('user', [
+                'getPages'
+            ]),
             login() {
                 const params = this.user;
                 const callback = (data) => {
                     sessionStorage.setItem('user', data);
                     this.updateUser();
+                    this.getPages();
                     this.$router.push('/');
                 };
-                this._ajax('post', 'api/login/in', callback, params);
+                this._ajax('post', 'api/user/in', callback, params);
             }
         }
     }

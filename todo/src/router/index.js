@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '../views/Home.vue';
 
+import store from '../store/index';
+
 Vue.use(Router);
 
 const router = new Router({
@@ -13,6 +15,10 @@ const router = new Router({
         path: '/login',
         name: 'login',
         component: () => import('../views/Login.vue')
+    }, {
+        path: '/user',
+        name: 'user',
+        component: () => import('../views/User.vue')
     }, {
         path: '/404',
         name: '404',
@@ -34,6 +40,7 @@ router.beforeEach((to, from, next) => {
             next();
         }
     } else {
+        // console.log(store);
         if (user) {
             // 已经登录过了，跳转到首页
             next();
