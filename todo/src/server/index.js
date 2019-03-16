@@ -23,5 +23,5 @@ app.use('/api/task', task);
 
 app.listen(8002, () => {
     // 启动之后自动打开默认浏览器
-    // c.exec('start http://127.0.0.1:8002/');
+    c.exec('start http://127.0.0.1:8002/');
 });
