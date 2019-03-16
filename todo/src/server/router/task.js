@@ -1,5 +1,6 @@
 const express = require('express'),
       router = express.Router(),
+      User = require('../UserModel'),
       Todo = require('../TaskModel');
 
 router.get('/', (req, res) => {
@@ -16,14 +17,24 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     const body = req.body;
-    Todo.create(body, (err, response) => {
-        const data = {
-            code: 200,
-            msg: 'add task success',
-            data: response
-        };
-        res.send(data);
-    });
+    User.find({ _id: body.user_id }, (err, users) => {
+        if (users.length == 1) {
+            Todo.create(body, (err, response) => {
+                const data = {
+                    code: 200,
+                    msg: 'add task success',
+                    data: response
+                };
+                res.send(data);
+            });
+        } else {
+            res.send({
+                code: -1,
+                msg: 'unknow user',
+                data: ''
+            });
+        }
+    })
 });
 
 router.put('/', (req, res) => {

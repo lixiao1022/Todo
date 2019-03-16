@@ -28,7 +28,7 @@
             </table>
         </div>
         <div class="m-dialog-wrap" v-show="visible">
-            <div class="m-dialog">
+            <div class="m-dialog" @keyup.enter="add">
                 <div class="u-input-wrap">
                     <span class="label">手机号：</span>
                     <input class="input u-ipt" type="text" v-model="user.tel">
